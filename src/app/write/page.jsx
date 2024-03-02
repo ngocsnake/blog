@@ -14,6 +14,7 @@ import {
 } from "firebase/storage";
 import { app } from "@/utils/firebase";
 import ReactQuill from "react-quill";
+import { FaSpinner } from "react-icons/fa";
 
 const WritePage = () => {
   const { status } = useSession();
@@ -24,6 +25,7 @@ const WritePage = () => {
   const [media, setMedia] = useState("");
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storage = getStorage(app);
@@ -42,9 +44,11 @@ const WritePage = () => {
           switch (snapshot.state) {
             case "paused":
               console.log("Upload is paused");
+              setLoading(false);
               break;
             case "running":
               console.log("Upload is running");
+              setLoading(true);
               break;
           }
         },
@@ -52,6 +56,8 @@ const WritePage = () => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setMedia(downloadURL);
+            setLoading(false);
+            setOpen(false);
           });
         }
       );
@@ -83,7 +89,7 @@ const WritePage = () => {
         title,
         desc: value,
         img: media,
-        slug: slugify(title)
+        slug: slugify(title),
       }),
     });
 
@@ -94,18 +100,22 @@ const WritePage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container + " mt-4"}>
       <input
         type="text"
         placeholder="Tiêu đề bài viết..."
-        className={styles.input}
+        className={styles.input + " border"}
         onChange={(e) => setTitle(e.target.value)}
       />
       <div className={styles.editor}>
         <button className={styles.button} onClick={() => setOpen(!open)}>
-          <Image src="/plus.png" alt="" width={16} height={16} />
+          {loading ? (
+            <FaSpinner />
+          ) : (
+            <Image src="/plus.png" alt="" width={16} height={16} />
+          )}
         </button>
-        {open && (
+        {open && !loading && (
           <div className={styles.add}>
             <input
               type="file"

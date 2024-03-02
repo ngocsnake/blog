@@ -9,8 +9,8 @@ import AuthProvider from "@/providers/AuthProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Lama Dev Blog App",
-  description: "The best blog app!",
+  title: "VN Express",
+  description: "VN Express!",
 };
 
 export default function RootLayout({ children }) {
@@ -20,12 +20,10 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <ThemeContextProvider>
             <ThemeProvider>
-              <div className="container">
-                <div className="wrapper">
-                  <Navbar />
-                  {children}
-                  <Footer />
-                </div>
+              <div className="container mx-auto">
+                <Navbar />
+                {children}
+                <Footer />
               </div>
             </ThemeProvider>
           </ThemeContextProvider>

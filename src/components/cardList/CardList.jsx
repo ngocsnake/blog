@@ -22,20 +22,17 @@ const getData = async (page, cat) => {
 const CardList = async ({ page, cat }) => {
   const { posts, count } = await getData(page, cat);
 
-  const POST_PER_PAGE = 2;
+  console.log(posts)
 
-  const hasPrev = POST_PER_PAGE * (page - 1) > 0;
-  const hasNext = POST_PER_PAGE * (page - 1) + POST_PER_PAGE < count;
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Recent Posts</h1>
-      <div className={styles.posts}>
+      <h1 className={styles.title + " font-bold"}>Bài viết nổi bật</h1>
+      <div className={styles.posts + " grid grid-cols-4"}>
         {posts?.map((item) => (
           <Card item={item} key={item._id} />
         ))}
       </div>
-      <Pagination page={page} hasPrev={hasPrev} hasNext={hasNext} />
     </div>
   );
 };

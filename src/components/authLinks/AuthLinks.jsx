@@ -3,25 +3,30 @@ import Link from "next/link";
 import styles from "./authLinks.module.css";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { FaUser } from "react-icons/fa";
 
 const AuthLinks = () => {
   const [open, setOpen] = useState(false);
 
-  const { status } = useSession();
+  const { status, data } = useSession();
+
+  console.log(data);
 
   return (
     <>
       {status === "unauthenticated" ? (
-        <Link href="/login" className={styles.link}>
-          Login
+        <Link href="/login" className="flex items-center gap-2">
+          <FaUser />
+          <span>Đăng nhập</span>
         </Link>
       ) : (
         <>
+          <p>Xin chào {data?.user?.name}</p>
           <Link href="/write" className={styles.link}>
-            Write
+            Đăng bài viết
           </Link>
           <span className={styles.link} onClick={signOut}>
-            Logout
+            Thoát
           </span>
         </>
       )}
