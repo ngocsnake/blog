@@ -12,18 +12,24 @@ const getData = async (page, cat) => {
     }
   );
 
+  const top = await fetch(`http://localhost:3000/api/posts/top`, {
+    cache: "no-store",
+  });
+
   if (!res.ok) {
     throw new Error("Failed");
   }
 
-  return res.json();
+  return {
+    ...(await res.json()),
+    top: await top.json(),
+  };
 };
 
 const CardList = async ({ page, cat }) => {
-  const { posts, count } = await getData(page, cat);
+  const { posts, count, top } = await getData(page, cat);
 
-  console.log(posts)
-
+  console.log(top);
 
   return (
     <div className={styles.container}>
